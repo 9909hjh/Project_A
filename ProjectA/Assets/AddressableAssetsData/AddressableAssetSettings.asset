@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: dfa91da7151931b49aa3c71c64085870
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 7b69e20029edc8e761ab2029caea53b8
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: b0f63f61fe2a36e46a683e3bf97ccb3f, type: 2}
   - {fileID: 11400000, guid: 0ae50c29229179140aef0d770a648f77, type: 2}
+  - {fileID: 11400000, guid: ccbb270e4c91d1f469814ec1fb1b06ca, type: 2}
+  - {fileID: 11400000, guid: 24546643520ab1843b352565f500bf38, type: 2}
+  - {fileID: 11400000, guid: d22bb74cca52d7f4f9d85735ba4ed893, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -63,6 +66,20 @@ MonoBehaviour:
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: ae0a96123c164a2468414fe8ba62cd2a
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 6e251b0c044c8214c8d68ec92456268a
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: b40b530d157ee16419874a35e705335e
+        m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+    - m_InheritedParent: 
+      m_Id: a1184837907b3744980a0166235a75c3
+      m_ProfileName: TestProfile
+      m_Values:
+      - m_Id: 33d06a168a2829e4c855cdf178897bd8
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: fd3478f156c68b547bf1711a87acd231
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: ae0a96123c164a2468414fe8ba62cd2a
+        m_Value: ServerData/[BuildTarget]
       - m_Id: 6e251b0c044c8214c8d68ec92456268a
         m_Value: ServerData/[BuildTarget]
       - m_Id: b40b530d157ee16419874a35e705335e
@@ -87,6 +104,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - PreLoad
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: bcfa8be7d6e4a124198856cdaf0085a3, type: 2}

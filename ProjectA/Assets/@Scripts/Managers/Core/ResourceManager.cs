@@ -59,10 +59,9 @@ public class ResourceManager
         Object.Destroy(go);
     }
 
-
     #region 어드레서블
     // 비동기 방식
-    public void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
+    private void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
     {
         // 캐시 확인
         if (_resources.TryGetValue(key, out Object resource))
@@ -72,25 +71,15 @@ public class ResourceManager
         }
 
         // 텍스쳐로 갖고 오는걸 스프라이트로 변환
-        string loadkey = key;
+        string loadKey = key;
         if (key.Contains(".sprite"))
-            loadkey = $"{key}[{key.Replace(".sprite", "")}]"; //$"{key}[{key.Replace(".sprite", "")}]"
+            loadKey = $"{key}[{key.Replace(".sprite", "")}]";
 
-        var asyncOperation = Addressables.LoadAssetAsync<T>(loadkey);
+        var asyncOperation = Addressables.LoadAssetAsync<T>(loadKey);
         asyncOperation.Completed += (op) =>
         {
-            if (op.Result is Texture2D texture)
-            {
-                // Texture2D를 Sprite로 변환.
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-
-                // 리소스에 스프라이트를 추가하고 콜백을 호출.
-                _resources.Add(key, sprite);
-                callback?.Invoke(sprite as T);
-                return;
-            }
-
             _resources.Add(key, op.Result);
+            _handles.Add(key, asyncOperation);
             callback?.Invoke(op.Result);
         };
     }
@@ -105,13 +94,34 @@ public class ResourceManager
 
             foreach (var result in op.Result)
             {
-                LoadAsync<T>(result.PrimaryKey, (obj) =>
+                if (result.PrimaryKey.Contains(".sprite"))
                 {
-                    loadCount++;
-                    callback?.Invoke(result.PrimaryKey, loadCount, totalCount); // 몇개의 프리펩이 있고 몇번째의 프리팹을 갖고 오는 중인지 채크
-                });
+                    LoadAsync<Sprite>(result.PrimaryKey, (obj) =>
+                    {
+                        loadCount++;
+                        callback?.Invoke(result.PrimaryKey, loadCount, totalCount); // 몇개의 프리펩이 있고 몇번째의 프리팹을 갖고 오는 중인지 채크
+                    });
+                }
+                else
+                {
+                    LoadAsync<T>(result.PrimaryKey, (obj) =>
+                    {
+                        loadCount++;
+                        callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
+                    });
+                }
             }
         };
+    }
+
+    public void Clear()
+    {
+        _resources.Clear();
+
+        foreach (var handle in _handles)
+            Addressables.Release(handle);
+
+        _handles.Clear();
     }
     #endregion
 
