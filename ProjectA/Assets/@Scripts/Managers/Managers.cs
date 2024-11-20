@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Managers : MonoBehaviour
 {
     private static Managers s_instance;
-    private static Managers Instance { get { return s_instance; } }
+    private static Managers Instance { get { Init(); return s_instance; } }
 
 
     #region Core

@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 public class ResourceManager
 {
-    Dictionary<string, UnityEngine.Object> _resources = new Dictionary<string, Object>();
+    private Dictionary<string, UnityEngine.Object> _resources = new Dictionary<string, Object>();
     private Dictionary<string, AsyncOperationHandle> _handles = new Dictionary<string, AsyncOperationHandle>(); 
 
     public T Load<T>(string key) where T : Object
@@ -38,10 +38,10 @@ public class ResourceManager
         }
 
         //Pooling
-        if (pooling)
-        {
-            //return Managers.Pool.Pop(prefab);
-        }
+        //if (pooling)
+        //{
+        //    //return Managers.Pool.Pop(prefab);
+        //}
 
         GameObject go = Object.Instantiate(prefab, parent);
         go.name = prefab.name;
@@ -86,7 +86,7 @@ public class ResourceManager
 
     public void LoadAllAsync<T>(string label, Action<string, int, int> callback) where T : UnityEngine.Object
     {
-        var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
+        var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T)); // 비동기 방식
         opHandle.Completed += (op) =>
         {
             int loadCount = 0;
