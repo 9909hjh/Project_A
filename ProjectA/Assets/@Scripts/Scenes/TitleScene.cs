@@ -11,22 +11,9 @@ public class TitleScene : BaseScene
 
         SceneType = Define.EScene.TitleScene;
 
-        StartLoadAssets();
-
         return true;
     }
 
-    void StartLoadAssets()
-    {
-        Managers.Resource.LoadAllAsync<Object>("PreLoad", (key, count, totalcount) =>
-        {
-            Debug.Log($"{key} {count}/{totalcount}");
-            if(count == totalcount)
-            {
-                // 메니져서에서 초기화.
-            }
-        });
-    }
 
     public override void Clear()
     {
