@@ -10,27 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Sprites
+  m_Name: UI
   m_EditorClassIdentifier: 
-  m_GroupName: Sprites
+  m_GroupName: UI
   m_Data:
     m_SerializedData: []
-  m_GUID: 73095cc62c4f31f47a77939a8c39d0cd
+  m_GUID: 0cd0cbbde48ba134eb2dcfe4d7ce76be
   m_SerializeEntries:
-  - m_GUID: 9e9a97fa10743de468e835b553974a09
-    m_Address: Object_Firewood
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9456dad1f5957414ab37f3ac1e8f980e
-    m_Address: Object_Meat
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 70c47d429c75ad8489dfb257e05d1640
-    m_Address: Object_Mineral
+  - m_GUID: 1d03a0bdd52a06d4b98b93039b35d084
+    m_Address: UI_TitleScene
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -39,5 +27,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: b488be16f8abec74aa044d7ca36c96e7, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 0b8ccfa46fd46364195dff07a63439d2, type: 2}
-    - {fileID: 11400000, guid: d041a4bc60dd36341915c52c7b6a2ee7, type: 2}
+    - {fileID: 11400000, guid: a318e37540a40d748826163885dda905, type: 2}
+    - {fileID: 11400000, guid: a7c87dbaf60dbec40a9f669cc8bfaa44, type: 2}
