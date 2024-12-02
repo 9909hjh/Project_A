@@ -42,12 +42,15 @@ public class UI_Joystick : UI_Base
         _cursor.transform.position = eventData.position;
         _touchPos = eventData.position;
 
+        Managers.Game.JoystickState = EJoystickState.PointerDown;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         _cursor.transform.position = _touchPos;
 
+        Managers.Game.MoveDir = Vector2.zero;
+        Managers.Game.JoystickState = EJoystickState.PointerUp;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -59,6 +62,8 @@ public class UI_Joystick : UI_Base
         Vector2 newPosition = _touchPos + moveDir * moveDist;
         _cursor.transform.position = newPosition;
 
+        Managers.Game.MoveDir = moveDir;
+        Managers.Game.JoystickState = EJoystickState.Drag;
     }
     #endregion
 }
