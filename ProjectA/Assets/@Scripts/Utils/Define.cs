@@ -51,7 +51,15 @@ public static class Define
         Dead
     }
 
+    public enum EJoystickState
+    {
+        PointerDown,
+        PointerUp,
+        Drag,
+    }
 }
+
+
 
 // 애니메이션 이름은 기획자 혹은 애니메이터와 상의
 public static class AnimName
