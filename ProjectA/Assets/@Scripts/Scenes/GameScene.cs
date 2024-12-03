@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
@@ -18,6 +19,10 @@ public class GameScene : BaseScene
 
         Hero hero = Managers.Object.Spawn<Hero>(Vector3.zero);
         hero.CreatureState = ECreatureState.Idle;
+
+        CameraController camera = Camera.main.GetOrAddComponent<CameraController>();
+        camera.Target = hero;
+
 
         Managers.UI.ShowBaseUI<UI_Joystick>();
 

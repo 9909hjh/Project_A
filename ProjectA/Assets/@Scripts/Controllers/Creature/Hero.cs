@@ -26,7 +26,7 @@ public class Hero : Creature
 
     void Update()
     {
-        transform.Translate(_moveDir * Time.deltaTime * Speed);
+        transform.TranslateEx(_moveDir * Time.deltaTime * Speed); //TranslateEx는 플립 기능이 들어가있음.
     }
 
     private void HandleOnMoveDirChanged(Vector2 dir)
