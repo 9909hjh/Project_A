@@ -10,13 +10,11 @@ public interface ILoader<key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, Data.TestData> TestDic { get; private set; } = new Dictionary<int, Data.TestData>();
+    public Dictionary<int, Data.CreatureData> TestDic { get; private set; } = new Dictionary<int, Data.CreatureData>();
     
-
-
     public void Init()
     {
-        TestDic = LoadJson<Data.TestDataLoader, int, Data.TestData>("TestData").MakeDict();
+        TestDic = LoadJson<Data.CreatureDataLoader, int, Data.CreatureData>("CreatureData").MakeDict();
         
     }
 
