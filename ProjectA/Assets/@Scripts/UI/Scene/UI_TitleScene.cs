@@ -48,6 +48,7 @@ public class UI_TitleScene : UI_Scene
             if (count == totalcount)
             {
                 // 메니져서에서 초기화.
+                Managers.Data.Init();
 
                 GetObject((int)GameObjects.StartImage).gameObject.SetActive(true);
                 GetText((int)Texts.DisplayText).text = "Touch To Start";

@@ -10,17 +10,19 @@ public interface ILoader<key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, Data.CreatureData> TestDic { get; private set; } = new Dictionary<int, Data.CreatureData>();
-    
+    public Dictionary<int, Data.CreatureData> CreatureDic { get; private set; } = new Dictionary<int, Data.CreatureData>();
+    //public Dictionary<int, Data.EnvData> EnvDic { get; private set; } = new Dictionary<int, Data.EnvData>();
+
     public void Init()
     {
-        TestDic = LoadJson<Data.CreatureDataLoader, int, Data.CreatureData>("CreatureData").MakeDict();
-        
+        CreatureDic = LoadJson<Data.CreatureDataLoader, int, Data.CreatureData>("CreatureData").MakeDict();
+        Debug.Log($"CreatureDic 초기화됨. 데이터 개수: {CreatureDic.Count}");
+        //EnvDic = LoadJson<Data.EnvDataLoader, int, Data.EnvData>("EnvData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
-    {
-        TextAsset textAsset = Managers.Resource.Load<TextAsset>(path);
-        return JsonConvert.DeserializeObject<Loader>(textAsset.text);
-    }
+	{
+		TextAsset textAsset = Managers.Resource.Load<TextAsset>(path);
+		return JsonConvert.DeserializeObject<Loader>(textAsset.text);
+	}
 }
