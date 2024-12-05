@@ -79,11 +79,18 @@ public static class Define
 // 애니메이션 이름은 기획자 혹은 애니메이터와 상의
 public static class AnimName
 {
+    public const string ATTACK_A = "attack";
+    public const string ATTACK_B = "attack";
+    public const string SKILL_A = "skill";
+    public const string SKILL_B = "skill";
     public const string IDLE = "idle";
-    public const string ATTACK_A = "attack_a";
-    public const string ATTACK_B = "attack_b";
     public const string MOVE = "move";
+    public const string DAMAGED = "hit";
     public const string DEAD = "dead";
+    public const string EVENT_ATTACK_A = "event_attack";
+    public const string EVENT_ATTACK_B = "event_attack";
+    public const string EVENT_SKILL_A = "event_attack";
+    public const string EVENT_SKILL_B = "event_attack";
 }
 
 public static class SortingLayers
