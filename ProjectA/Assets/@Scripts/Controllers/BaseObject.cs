@@ -54,6 +54,7 @@ public class BaseObject : InitBase
     }
     #endregion
 
+
     #region Spine
     protected virtual void SetSpineAnimation(string dataLabel, int sortingOrder)
     {

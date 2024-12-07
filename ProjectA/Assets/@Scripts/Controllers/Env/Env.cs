@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class Env : BaseObject
 {
@@ -64,5 +65,31 @@ public class Env : BaseObject
         }
     }
 
+    public override void OnDamaged(BaseObject attacker)
+    {
+        if (EnvState == EEnvState.Dead)
+            return;
 
+        base.OnDamaged(attacker);
+
+        float finalDamage = 1;
+        EnvState = EEnvState.OnDamaged;
+
+        // TODO : Show UI
+
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+        if (Hp <= 0)
+            OnDead(attacker);
+    }
+
+    public override void OnDead(BaseObject attacker)
+    {
+        base.OnDead(attacker);
+
+        EnvState = EEnvState.Dead;
+
+        // TODO : Drop Item	
+
+        Managers.Object.Despawn(this);
+    }
 }

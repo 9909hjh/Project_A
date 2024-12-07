@@ -84,9 +84,16 @@ public class Creature : BaseObject
         // CreatureData.SkillIdList;
 
         // Stat
+        //MaxHp = CreatureData.MaxHp;
+        //Hp = CreatureData.MaxHp;
+        //Atk = CreatureData.Atk;
+        //MoveSpeed = CreatureData.MoveSpeed;
+        
+        // test
         MaxHp = CreatureData.MaxHp;
         Hp = CreatureData.MaxHp;
-        Atk = CreatureData.Atk;
+        Atk = CreatureData.MaxHp;
+        MaxHp = CreatureData.MaxHp;
         MoveSpeed = CreatureData.MoveSpeed;
 
         // State
@@ -165,6 +172,36 @@ public class Creature : BaseObject
     protected virtual void UpdateMove() { }
     protected virtual void UpdateSkill() { }
     protected virtual void UpdateDead() { }
+    #endregion
+
+    #region Battle
+    public override void OnDamaged(BaseObject attacker)
+    {
+        base.OnDamaged(attacker);
+
+        if (attacker.IsValid() == false)
+            return;
+
+        Creature creature = attacker as Creature;
+        if (creature == null)
+            return;
+
+        float finalDamage = creature.Atk; // TODO
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp); // 이렇게 코드를 짠 이유는 기획자가 실수로 -를 입력하면 데미지가 아니라 힐이 되버려서 Clamp를 이용함.
+
+        if (Hp <= 0)
+        {
+            OnDead(attacker);
+            CreatureState = ECreatureState.Dead;
+        }
+    }
+
+    public override void OnDead(BaseObject attacker)
+    {
+        base.OnDead(attacker);
+
+
+    }
     #endregion
 
     #region Wait
