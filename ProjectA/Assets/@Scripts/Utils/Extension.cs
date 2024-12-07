@@ -21,6 +21,20 @@ public static class Extension
         return go != null && go.activeSelf;
     }
 
+    public static bool IsValid(this BaseObject bo)
+    {
+        if (bo == null || bo.isActiveAndEnabled == false)
+            return false;
+
+        return true;
+    }
+
+    public static void DestroyChilds(this GameObject go)
+    {
+        foreach (Transform child in go.transform)
+            Managers.Resource.Destroy(child.gameObject);
+    }
+
     public static void Shuffle<T>(this IList<T> list)
     {
         int n = list.Count;
