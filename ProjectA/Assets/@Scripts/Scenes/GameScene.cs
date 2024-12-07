@@ -20,6 +20,9 @@ public class GameScene : BaseScene
         Hero hero = Managers.Object.Spawn<Hero>(new Vector3Int(-10, -5, 0), HERO_KNIGHT_ID);
         hero.CreatureState = ECreatureState.Idle;
 
+
+
+
         CameraController camera = Camera.main.GetOrAddComponent<CameraController>();
         camera.Target = hero;
 
