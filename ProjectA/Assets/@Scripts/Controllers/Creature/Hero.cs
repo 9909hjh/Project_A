@@ -1,3 +1,5 @@
+using Spine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +16,10 @@ public class Hero : Creature
         {
             _needArrange = value;
 
-            //if (value)
-            //    ChangeColliderSize(EColliderSize.Big);
-            //else
-            //    TryResizeCollider();
+            if (value)
+                ChangeColliderSize(EColliderSize.Big);
+            else
+                TryResizeCollider();
         }
     }
 
@@ -30,10 +32,10 @@ public class Hero : Creature
             {
                 base.CreatureState = value;
 
-                //if (value == ECreatureState.Move)
-                //    RigidBody.mass = CreatureData.Mass;
-                //else
-                //    RigidBody.mass = CreatureData.Mass * 0.1f;
+                if (value == ECreatureState.Move)
+                    RigidBody.mass = CreatureData.Mass;
+                else
+                    RigidBody.mass = CreatureData.Mass * 0.1f;
             }
         }
     }
@@ -48,13 +50,13 @@ public class Hero : Creature
             switch (value)
             {
                 case EHeroMoveState.CollectEnv:
-                    //NeedArrange = true;
+                    NeedArrange = true;
                     break;
                 case EHeroMoveState.TargetMonster:
-                    //NeedArrange = true;
+                    NeedArrange = true;
                     break;
                 case EHeroMoveState.ForceMove:
-                    //NeedArrange = true;
+                    NeedArrange = true;
                     break;
             }
         }
@@ -206,15 +208,44 @@ public class Hero : Creature
         }
 
         // camp주변으로 모이게 하기
-
+        if (HeroMoveState == EHeroMoveState.ReturnToCamp)
+        {
+            Vector3 dir = HeroCampDest.position - transform.position;
+            float stopDistanceSqr = StopDistance * StopDistance;
+            if (dir.sqrMagnitude <= StopDistance)
+            {
+                HeroMoveState = EHeroMoveState.None;
+                CreatureState = ECreatureState.Idle;
+                NeedArrange = false;
+                return;
+            }
+            else
+            {
+                // 멀리 있을 수록 빨라짐
+                float ratio = Mathf.Min(1, dir.magnitude); // TEMP
+                float moveSpeed = MoveSpeed * (float)Math.Pow(ratio, 3);
+                SetRigidBodyVelocity(dir.normalized * moveSpeed);
+                return;
+            }
+        }
 
         // 누르다 떘을 떄
         CreatureState = ECreatureState.Idle;
     }
 
     protected override void UpdateSkill() 
-    { 
-    
+    {
+        if (HeroMoveState == EHeroMoveState.ForceMove)
+        {
+            CreatureState = ECreatureState.Move;
+            return;
+        }
+
+        if (_target.IsValid() == false)
+        {
+            CreatureState = ECreatureState.Move;
+            return;
+        }
     }
 
     protected override void UpdateDead() 
@@ -276,8 +307,27 @@ public class Hero : Creature
             return;
         }
     }
-
     #endregion
+
+    private void TryResizeCollider()
+    {
+        // 일단 충돌체 아주 작게.
+        ChangeColliderSize(EColliderSize.Small);
+
+        foreach (var hero in Managers.Object.Heroes)
+        {
+            if (hero.HeroMoveState == EHeroMoveState.ReturnToCamp)
+                return;
+        }
+
+        // ReturnToCamp가 한 명도 없으면 콜라이더 조정.
+        foreach (var hero in Managers.Object.Heroes)
+        {
+            // 단 채집이나 전투중이면 스킵.
+            if (hero.CreatureState == ECreatureState.Idle)
+                hero.ChangeColliderSize(EColliderSize.Big);
+        }
+    }
 
     private void HandleOnJoystickStateChanged(EJoystickState joystickState)
     {
@@ -295,5 +345,19 @@ public class Hero : Creature
             default:
                 break;
         }
+    }
+
+    public override void OnAnimEventHandler(TrackEntry trackEntry, Spine.Event e)
+    {
+        base.OnAnimEventHandler(trackEntry, e);
+
+        // TODO
+        CreatureState = ECreatureState.Move;
+
+        // Skill
+        if (_target.IsValid() == false)
+            return;
+
+        _target.OnDamaged(this);
     }
 }

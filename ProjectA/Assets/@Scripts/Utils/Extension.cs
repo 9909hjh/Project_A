@@ -46,11 +46,4 @@ public static class Extension
             (list[k], list[n]) = (list[n], list[k]); // 스왑 코드
         }
     }
-
-    public static void TranslateEx(this Transform transform, Vector3 dir)
-    {
-        BaseObject bo = transform.gameObject.GetComponent<BaseObject>();
-        if (bo != null)
-            bo.TranslateEx(dir);
-    }
 }

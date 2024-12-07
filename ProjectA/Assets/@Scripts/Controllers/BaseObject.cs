@@ -1,3 +1,4 @@
+using Spine;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,15 +42,17 @@ public class BaseObject : InitBase
         return true;
     }
 
-    public void TranslateEx(Vector3 dir)
+    #region Battle
+    public virtual void OnDamaged(BaseObject attacker)
     {
-        transform.Translate(dir);
 
-        if (dir.x < 0)
-            LookLeft = true;
-        else if (dir.x > 0)
-            LookLeft = false;
     }
+
+    public virtual void OnDead(BaseObject attacker)
+    {
+
+    }
+    #endregion
 
     #region Spine
     protected virtual void SetSpineAnimation(string dataLabel, int sortingOrder)
@@ -106,6 +109,11 @@ public class BaseObject : InitBase
             return;
 
         SkeletonAnim.Skeleton.ScaleX = flag ? -1 : 1;
+    }
+
+    public virtual void OnAnimEventHandler(TrackEntry trackEntry, Spine.Event e)
+    {
+        Debug.Log("OnAnimEventHandler");
     }
     #endregion
 }
