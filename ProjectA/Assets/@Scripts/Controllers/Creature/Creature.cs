@@ -1,12 +1,15 @@
 using Spine.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static Define;
+using static UnityEngine.GraphicsBuffer;
 
 public class Creature : BaseObject
 {
+    public BaseObject Target { get; protected set; }
     public Data.CreatureData CreatureData { get; private set; }
     public ECreatureType CreatureType { get; protected set; } = ECreatureType.None;
 
@@ -54,7 +57,12 @@ public class Creature : BaseObject
     {
         DataTemplateID = templateID;
 
-        CreatureData = Managers.Data.CreatureDic[templateID];
+        if (CreatureType == ECreatureType.Hero)
+            CreatureData = Managers.Data.HeroDic[templateID];
+        else
+            CreatureData = Managers.Data.MonsterDic[templateID];
+
+
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.DescriptionTextID}";
 
         // Collider
@@ -200,7 +208,72 @@ public class Creature : BaseObject
     {
         base.OnDead(attacker);
 
+    }
+    #endregion
 
+    protected BaseObject FindClosestInRange(float range, IEnumerable<BaseObject> objs, Func<BaseObject, bool> func = null)
+    {
+        BaseObject target = null;
+        float bestDistanceSqr = float.MaxValue;
+        float searchDistanceSqr = range * range;
+
+        foreach (BaseObject obj in objs)
+        {
+            Vector3 dir = obj.transform.position - transform.position;
+            float distToTargetSqr = dir.sqrMagnitude;
+
+            // 서치 범위보다 멀리 있으면 스킵.
+            if (distToTargetSqr > searchDistanceSqr)
+                continue;
+
+            // 이미 더 좋은 후보를 찾았으면 스킵.
+            if (distToTargetSqr > bestDistanceSqr)
+                continue;
+
+            // 함수 포인터를 사용할 예정 => 뭔가 다르게 실행시켜야 할 부분을 함수 포인터를 사용해서 제작해보자.
+            // 추가조건
+            if (func != null && func.Invoke(obj) == false)
+                continue;
+
+            target = obj;
+            bestDistanceSqr = distToTargetSqr;
+        }
+
+        return target;
+    }
+
+    protected void ChaseOrAttackTarget(float attackRange, float chaseRange)
+    {
+        Vector3 dir = (Target.transform.position - transform.position);
+        float distToTargetSqr = dir.sqrMagnitude;
+        float attackDistanceSqr = attackRange * attackRange;
+
+        if (distToTargetSqr <= attackDistanceSqr)
+        {
+            // 공격 범위 이내로 들어왔다면 공격.
+            CreatureState = ECreatureState.Skill;
+            return;
+        }
+        else
+        {
+            // 공격 범위 밖이라면 추적.
+            SetRigidBodyVelocity(dir.normalized * MoveSpeed);
+
+            // 너무 멀어지면 포기.
+            float searchDistanceSqr = chaseRange * chaseRange;
+            if (distToTargetSqr > searchDistanceSqr)
+            {
+                Target = null;
+                CreatureState = ECreatureState.Move;
+            }
+            return;
+        }
+    }
+
+    #region Misc
+    protected bool IsValid(BaseObject bo)
+    {
+        return bo.IsValid();
     }
     #endregion
 
