@@ -17,6 +17,36 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 73095cc62c4f31f47a77939a8c39d0cd
   m_SerializeEntries:
+  - m_GUID: f557cfa0156e6ed4d86f4e08e23c8298
+    m_Address: 003
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7070e5b061f1d1847868d9eb0b4e7cb9
+    m_Address: 002
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2866e1f69feba374e9ba7499aec76c6d
+    m_Address: 001
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 189e2249395e05a40af50684e2358c25
+    m_Address: 004
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad9b13230f9c3894884e35fdd463d9f9
+    m_Address: 005
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9e9a97fa10743de468e835b553974a09
     m_Address: Object_Firewood
     m_ReadOnly: 0
@@ -31,6 +61,42 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70c47d429c75ad8489dfb257e05d1640
     m_Address: Object_Mineral
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76cf1b0538269804caf22669ddfeff18
+    m_Address: Object_treasure
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9519a8f13ca602d4e87b9e900f365876
+    m_Address: Object_treasure_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d0c297f47f5fd94ea5ce90291fcc441
+    m_Address: Object_treecut_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a11c7014bdf7db14a9f2b903f9ab4532
+    m_Address: ui_109
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e334a71aaaee904c8e07547dfb9f815
+    m_Address: goblin_shot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98746b0d00a325c4ca55d94a17e00adc
+    m_Address: wizard_shot.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad

@@ -33,6 +33,23 @@ public static class Extension
         return true;
     }
 
+    // 비트 플래그 -> int는 32비트면 [....~....] 구멍이 32개 뚫려있는 것, 여기다 bool를 32승 가지를 사용하는 방식.
+    public static void MakeMask(this ref LayerMask mask, List<Define.ELayer> list)
+    {
+        foreach (Define.ELayer layer in list)
+            mask |= (1 << (int)layer);
+    }
+
+    public static void AddLayer(this ref LayerMask mask, Define.ELayer layer)
+    {
+        mask |= (1 << (int)layer);
+    }
+
+    public static void RemoveLayer(this ref LayerMask mask, Define.ELayer layer)
+    {
+        mask &= ~(1 << (int)layer);
+    }
+
     public static void DestroyChilds(this GameObject go)
     {
         foreach (Transform child in go.transform)
