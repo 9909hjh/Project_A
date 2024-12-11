@@ -104,14 +104,13 @@ public class Monster : Creature
                 return;
             }
 
-            SetRigidBodyVelocity(dir.normalized * MoveSpeed);
+            //SetRigidBodyVelocity(dir.normalized * MoveSpeed);
         }
         else
         {
             // Chase
             SkillBase skill = Skills.GetReadySkill();
             ChaseOrAttackTarget(MONSTER_SEARCH_DISTANCE, skill);
-
             //ChaseOrAttackTarget(MONSTER_SEARCH_DISTANCE, 5.0f);
 
             // 너무 멀어지면 포기.
@@ -137,7 +136,6 @@ public class Monster : Creature
 
     protected override void UpdateDead()
     {
-        SetRigidBodyVelocity(Vector2.zero);
 
     }
     #endregion

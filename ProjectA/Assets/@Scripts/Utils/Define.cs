@@ -115,6 +115,9 @@ public static class Define
     // 임시 코드
     public const int CAMERA_PROJECTION_SIZE = 12;
 
+    public const int HERO_DEFAULT_MOVE_DEPTH = 5;
+    public const int MONSTER_DEFAULT_MOVE_DEPTH = 3;
+
     public const float HERO_SEARCH_DISTANCE = 8.0f;
     public const float MONSTER_SEARCH_DISTANCE = 8.0f;
     public const int HERO_DEFAULT_MELEE_ATTACK_RANGE = 1;
