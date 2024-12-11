@@ -132,11 +132,21 @@ public class Hero : Creature
 
     protected override void UpdateMove() 
     {
-        /* 1. 누르면 강제 이동
+        /* 0. 너무 멀리 떨어져 있으면 강제 이동
+         * 1. 누르면 강제 이동
          * 2. 주변 몬스터 찾기
          * 3. 주변 Env 채집
          * 4. 강제로 camp모이게 하기
          */
+
+        if (HeroMoveState == EHeroMoveState.ForcePath)
+        {
+            MoveByForcePath();
+            return;
+        }
+
+        if (CheckHeroCampDistanceAndForcePath())
+            return;
 
         if (HeroMoveState == EHeroMoveState.ForceMove)
         {
@@ -217,6 +227,61 @@ public class Hero : Creature
         // 누르다 땠을 떄
         if (LerpCellPosCompleted)
             CreatureState = ECreatureState.Idle;
+    }
+
+    // 몇몇 히어로가 벽에 걸려 이동에 실패했을 경우 전체 이동 경로 서치
+    Queue<Vector3Int> _forcePath = new Queue<Vector3Int>();
+
+    bool CheckHeroCampDistanceAndForcePath()
+    {
+        // 너무 멀어서 못 간다.
+        Vector3 destPos = HeroCampDest.position;
+        Vector3Int destCellPos = Managers.Map.World2Cell(destPos);
+        if ((CellPos - destCellPos).magnitude <= 10)
+            return false;
+
+        if (Managers.Map.CanGo(destCellPos, ignoreObjects: true) == false)
+            return false;
+
+        List<Vector3Int> path = Managers.Map.FindPath(CellPos, destCellPos, 100);
+        if (path.Count < 2)
+            return false;
+
+        HeroMoveState = EHeroMoveState.ForcePath;
+
+        _forcePath.Clear();
+        foreach (var p in path)
+        {
+            _forcePath.Enqueue(p);
+        }
+        _forcePath.Dequeue();
+
+        return true;
+    }
+
+    void MoveByForcePath()
+    {
+        if (_forcePath.Count == 0)
+        {
+            HeroMoveState = EHeroMoveState.None;
+            return;
+        }
+
+        Vector3Int cellPos = _forcePath.Peek();
+
+        if (MoveToCellPos(cellPos, 2))
+        {
+            _forcePath.Dequeue();
+            return;
+        }
+
+        // 실패 사유가 영웅이라면.
+        Hero hero = Managers.Map.GetObject(cellPos) as Hero;
+        if (hero != null && hero.CreatureState == ECreatureState.Idle)
+        {
+            HeroMoveState = EHeroMoveState.None;
+            return;
+        }
     }
 
     protected override void UpdateSkill() 
