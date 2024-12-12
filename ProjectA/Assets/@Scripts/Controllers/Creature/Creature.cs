@@ -32,6 +32,19 @@ public class Creature : BaseObject
     public float MoveSpeed { get; set; }
     #endregion
 
+    protected float AttackDistance
+    {
+        get
+        {
+            float env = 2.2f;
+            if (Target != null && Target.ObjectType == EObjectType.Env)
+                return Mathf.Max(env, Collider.radius + Target.Collider.radius + 0.1f);
+
+            float baseValue = CreatureData.AtkRange;
+            return baseValue;
+        }
+    }
+
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
     {
@@ -168,8 +181,60 @@ public class Creature : BaseObject
 
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateMove() { }
-    protected virtual void UpdateSkill() { }
+    protected virtual void UpdateSkill() // 원래는 몬스터, 히어로 따로 스킬을 관리했지만 공용적으로 스킬을 관리하게 변경
+    {
+        if (_coWait != null)
+            return;
+
+        if (Target.IsValid() == false || Target.ObjectType == EObjectType.HeroCamp)
+        {
+            CreatureState = ECreatureState.Idle;
+            return;
+        }
+
+        Vector3 dir = (Target.CenterPosition - CenterPosition);
+        float distToTargetSqr = dir.sqrMagnitude;
+        float attackDistanceSqr = AttackDistance * AttackDistance;
+        if (distToTargetSqr > attackDistanceSqr)
+        {
+            CreatureState = ECreatureState.Idle;
+            return;
+        }
+
+        // DoSkill
+        Skills.CurrentSkill.DoSkill();
+
+        LookAtTarget(Target);
+
+        var trackEntry = SkeletonAnim.state.GetCurrent(0);
+        float delay = trackEntry.Animation.Duration;
+
+        StartWait(delay);
+    }
     protected virtual void UpdateDead() { }
+    #endregion
+
+    #region Wait
+    protected Coroutine _coWait;
+
+    protected void StartWait(float seconds)
+    {
+        CancelWait();
+        _coWait = StartCoroutine(CoWait(seconds));
+    }
+
+    IEnumerator CoWait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _coWait = null;
+    }
+
+    protected void CancelWait()
+    {
+        if (_coWait != null)
+            StopCoroutine(_coWait);
+        _coWait = null;
+    }
     #endregion
 
     #region Battle
@@ -232,24 +297,17 @@ public class Creature : BaseObject
         return target;
     }
 
-    protected void ChaseOrAttackTarget(float chaseRange, SkillBase skill)
+    protected void ChaseOrAttackTarget(float chaseRange, float attackRange)
     {
         Vector3 dir = (Target.transform.position - transform.position);
         float distToTargetSqr = dir.sqrMagnitude;
-
-        // TEMP
-        float attackRange = HERO_DEFAULT_MELEE_ATTACK_RANGE;
-        if (skill.SkillData.ProjectileId != 0)
-            attackRange = HERO_DEFAULT_RANGED_ATTACK_RANGE;
-
-        float finalAttackRange = attackRange + Target.ColliderRadius + ColliderRadius;
-        float attackDistanceSqr = finalAttackRange * finalAttackRange;
+        float attackDistanceSqr = attackRange * attackRange;
 
         if (distToTargetSqr <= attackDistanceSqr)
         {
             // 공격 범위 이내로 들어왔다면 공격.
             CreatureState = ECreatureState.Skill;
-            skill.DoSkill();
+            //skill.DoSkill();
             return;
         }
         else

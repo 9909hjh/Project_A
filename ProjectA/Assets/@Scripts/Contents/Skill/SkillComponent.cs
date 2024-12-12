@@ -4,10 +4,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using Random = UnityEngine.Random;
 
 public class SkillComponent : InitBase
 {
-    public List<SkillBase> SkillList { get; } = new List<SkillBase>();
+    public List<SkillBase> SkillList { get; } = new List<SkillBase>(); // 갖고 있는 스킬
+    public List<SkillBase> ActiveSkills { get; set; } = new List<SkillBase>(); // 사용가능한 스킬
+
+    public SkillBase DefaultSkill { get; private set; } // 평타
+    public SkillBase EnvSkill { get; private set; } // 채집
+    public SkillBase ASkill { get; private set; } // 스킬 A
+    public SkillBase BSkill { get; private set; } // 스킬 B
+
+    public SkillBase CurrentSkill
+    {
+        get
+        {
+            if (ActiveSkills.Count == 0)
+                return DefaultSkill;
+
+            int randomIndex = Random.Range(0, ActiveSkills.Count);
+            return ActiveSkills[randomIndex];
+        }
+    }
 
     Creature _owner;
 
@@ -40,8 +59,6 @@ public class SkillComponent : InitBase
             return;
         }
 
-        string className = Managers.Data.SkillDic[skillTemplateID].ClassName;
-
         SkillBase skill = gameObject.AddComponent(Type.GetType(data.ClassName)) as SkillBase;
         if (skill == null)
             return;
@@ -49,11 +66,23 @@ public class SkillComponent : InitBase
         skill.SetInfo(_owner, skillTemplateID);
 
         SkillList.Add(skill);
-    }
 
-    public SkillBase GetReadySkill()
-    {
-        // TEMP
-        return SkillList[0];
+        switch (skillSlot)
+        {
+            case Define.ESkillSlot.Default:
+                DefaultSkill = skill;
+                break;
+            case Define.ESkillSlot.Env:
+                EnvSkill = skill;
+                break;
+            case Define.ESkillSlot.A:
+                ASkill = skill;
+                ActiveSkills.Add(skill);
+                break;
+            case Define.ESkillSlot.B:
+                BSkill = skill;
+                ActiveSkills.Add(skill);
+                break;
+        }
     }
 }
