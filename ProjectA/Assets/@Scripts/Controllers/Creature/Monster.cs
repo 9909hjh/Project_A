@@ -51,10 +51,6 @@ public class Monster : Creature
 
         // State
         CreatureState = ECreatureState.Idle;
-
-        // Skill
-        Skills = gameObject.GetOrAddComponent<SkillComponent>();
-        Skills.SetInfo(this, CreatureData.SkillIdList);
     }
 
     void Start()

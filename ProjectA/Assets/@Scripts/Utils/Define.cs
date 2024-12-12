@@ -113,7 +113,36 @@ public static class Define
         Wall,
     }
 
+    public enum ESkillSlot
+    {
+        Default,
+        Env,
+        A,
+        B
+    }
+
+    public enum EIndicatorType
+    {
+        None,
+        Cone,
+        Rectangle,
+    }
+
+    public enum EEffectSize
+    {
+        CircleSmall,
+        CircleNormal,
+        CircleBig,
+        ConeSmall,
+        ConeNormal,
+        ConeBig,
+    }
+
     // 임시 코드
+    public const float EFFECT_SMALL_RADIUS = 2.5f;
+    public const float EFFECT_NORMAL_RADIUS = 4.5f;
+    public const float EFFECT_BIG_RADIUS = 5.5f;
+
     public const int CAMERA_PROJECTION_SIZE = 12;
 
     public const int HERO_DEFAULT_MOVE_DEPTH = 5;

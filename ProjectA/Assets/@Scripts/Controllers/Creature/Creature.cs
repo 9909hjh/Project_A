@@ -68,11 +68,11 @@ public class Creature : BaseObject
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.DescriptionTextID}";
 
         // Collider
-        Collider.offset = new Vector2(CreatureData.ColliderOffsetX, CreatureData.ColliderOffstY);
+        Collider.offset = new Vector2(CreatureData.ColliderOffsetX, CreatureData.ColliderOffsetY);
         Collider.radius = CreatureData.ColliderRadius;
 
         // RigidBody
-        RigidBody.mass = CreatureData.Mass;
+        RigidBody.mass = 0;
 
         // Spine
         SkeletonAnim.skeletonDataAsset = Managers.Resource.Load<SkeletonDataAsset>(CreatureData.SkeletonDataID);
@@ -91,14 +91,15 @@ public class Creature : BaseObject
         sg.sortingOrder = SortingLayers.CREATURE;
 
         // Skills
-        // CreatureData.SkillIdList;
+        Skills = gameObject.GetOrAddComponent<SkillComponent>();
+        Skills.SetInfo(this, CreatureData);
 
         // Stat
         //MaxHp = CreatureData.MaxHp;
         //Hp = CreatureData.MaxHp;
         //Atk = CreatureData.Atk;
         //MoveSpeed = CreatureData.MoveSpeed;
-        
+
         // test
         MaxHp = CreatureData.MaxHp;
         Hp = CreatureData.MaxHp;
