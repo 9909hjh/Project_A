@@ -50,6 +50,15 @@ public class AreaSkill : SkillBase
 
     protected override void OnAttackEvent()
     {
-        // Todo - 피격범위에 공격 이벤트
+        float radius = Util.GetEffectRadius(SkillData.EffectSize);
+        List<Creature> targets = Managers.Object.FindConeRangeTargets(Owner, _skillDir, radius, _angleRange);
+
+        foreach (var target in targets)
+        {
+            if (target.IsValid())
+            {
+                target.OnDamaged(Owner, this);
+            }
+        }
     }
 }
