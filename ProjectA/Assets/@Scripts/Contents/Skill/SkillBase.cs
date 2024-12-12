@@ -73,7 +73,12 @@ public abstract class SkillBase : InitBase
             Owner.Skills.ActiveSkills.Add(this);
     }
 
-    // Todo - 투사체 만들기
+    public virtual void CancelSkill()
+    {
+
+    }
+
+    //투사체 만들기
     protected virtual void GenerateProjectile(Creature owner, Vector3 spawnPos)
     {
         Projectile projectile = Managers.Object.Spawn<Projectile>(spawnPos, SkillData.ProjectileId);

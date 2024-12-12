@@ -97,6 +97,9 @@ public class MapManager
         if (tm != null)
             tm.gameObject.SetActive(false);
 
+        // 임시 테스트 꼭 지울것 return;
+        return;
+
         for (int y = tm.cellBounds.yMax; y >= tm.cellBounds.yMin; y--)
         {
             for (int x = tm.cellBounds.xMin; x <= tm.cellBounds.xMax; x++)
