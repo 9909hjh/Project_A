@@ -252,6 +252,8 @@ public class Creature : BaseObject
         float finalDamage = creature.Atk; // TODO
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp); // 이렇게 코드를 짠 이유는 기획자가 실수로 -를 입력하면 데미지가 아니라 힐이 되버려서 Clamp를 이용함.
 
+        Managers.Object.ShowDamageFont(CenterPosition, finalDamage, transform, false);
+
         if (Hp <= 0)
         {
             OnDead(attacker, skill);
