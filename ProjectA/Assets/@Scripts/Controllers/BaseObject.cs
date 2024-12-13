@@ -12,6 +12,7 @@ public class BaseObject : InitBase
     public CircleCollider2D Collider { get; private set; }
     public SkeletonAnimation SkeletonAnim { get; private set; }
     public Rigidbody2D RigidBody { get; private set; }
+    private HurtFlashEffect HurtFlash;
 
     public float ColliderRadius { get { return Collider != null ? Collider.radius : 0.0f; } }
     //public float ColliderRadius { get { return Collider?.radius ?? 0.0f; } } // 삼항연산과 비슷 위 ColliderRadius 코드
@@ -38,6 +39,7 @@ public class BaseObject : InitBase
         Collider = gameObject.GetOrAddComponent<CircleCollider2D>();
         SkeletonAnim = GetComponent<SkeletonAnimation>();
         RigidBody = GetComponent<Rigidbody2D>();
+        HurtFlash = gameObject.GetOrAddComponent<HurtFlashEffect>();
 
         return true;
     }
@@ -73,7 +75,7 @@ public class BaseObject : InitBase
     #region Battle
     public virtual void OnDamaged(BaseObject attacker, SkillBase skill)
     {
-
+        HurtFlash.Flash();
     }
 
     public virtual void OnDead(BaseObject attacker, SkillBase skill)
