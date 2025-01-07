@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
+/*
+ * 여기서 Effect 어떠한 효과, 현상 ex) 힐, 데미지를 입었을때 생기는 효과를 말함
+ */
 public class EffectBase : BaseObject
 {
     public Creature Owner;
@@ -44,6 +47,7 @@ public class EffectBase : BaseObject
         // Duration = EffectData.TickTime * EffectData.TickCount;
         // Period = EffectData.TickTime;
     }
+
     public virtual void ApplyEffect()
     {
         ShowEffect();
