@@ -17,19 +17,15 @@ public class Creature : BaseObject
 
     #region Stats
     public float Hp { get; set; }
-    public float MaxHp { get; set; }
-    public float MaxHpBonusRate { get; set; }
-    public float HealBonusRate { get; set; }
-    public float HpRegen { get; set; }
-    public float Atk { get; set; }
-    public float AttackRate { get; set; }
-    public float Def { get; set; }
-    public float DefRate { get; set; }
-    public float CriRate { get; set; }
-    public float CriDamage { get; set; }
-    public float DamageReduction { get; set; }
-    public float MoveSpeedRate { get; set; }
-    public float MoveSpeed { get; set; }
+    public CreatureStat MaxHp;
+    public CreatureStat Atk;
+    public CreatureStat CriRate;
+    public CreatureStat CriDamage;
+    public CreatureStat ReduceDamageRate;
+    public CreatureStat LifeStealRate;
+    public CreatureStat ThornsDamageRate; // 쏜즈
+    public CreatureStat MoveSpeed;
+    public CreatureStat AttackSpeedRate;
     #endregion
 
     protected float AttackDistance
@@ -114,11 +110,16 @@ public class Creature : BaseObject
         //MoveSpeed = CreatureData.MoveSpeed;
 
         // test
-        MaxHp = CreatureData.MaxHp;
         Hp = CreatureData.MaxHp;
-        Atk = CreatureData.MaxHp;
-        MaxHp = CreatureData.MaxHp;
-        MoveSpeed = CreatureData.MoveSpeed;
+        MaxHp = new CreatureStat(CreatureData.MaxHp);
+        Atk = new CreatureStat(CreatureData.Atk);
+        CriRate = new CreatureStat(CreatureData.CriRate);
+        CriDamage = new CreatureStat(CreatureData.CriDamage);
+        ReduceDamageRate = new CreatureStat(0);
+        LifeStealRate = new CreatureStat(0);
+        ThornsDamageRate = new CreatureStat(0);
+        MoveSpeed = new CreatureStat(CreatureData.MoveSpeed);
+        AttackSpeedRate = new CreatureStat(1);
 
         // State
         CreatureState = ECreatureState.Idle;
@@ -249,8 +250,8 @@ public class Creature : BaseObject
         if (creature == null)
             return;
 
-        float finalDamage = creature.Atk; // TODO
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp); // 이렇게 코드를 짠 이유는 기획자가 실수로 -를 입력하면 데미지가 아니라 힐이 되버려서 Clamp를 이용함.
+        float finalDamage = creature.Atk.Value;
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp.Value); // 이렇게 코드를 짠 이유는 기획자가 실수로 -를 입력하면 데미지가 아니라 힐이 되버려서 Clamp를 이용함.
 
         Managers.Object.ShowDamageFont(CenterPosition, finalDamage, transform, false);
 
