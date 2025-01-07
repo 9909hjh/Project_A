@@ -145,6 +145,13 @@ public static class Define
         PercentMult,
     }
 
+    public enum EEffectType
+    {
+        Buff,
+        Debuff,
+        CrowdControl,
+    }
+
     // 임시 코드
     public const float EFFECT_SMALL_RADIUS = 2.5f;
     public const float EFFECT_NORMAL_RADIUS = 4.5f;
