@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
@@ -25,10 +26,11 @@ public class GameScene : BaseScene
             int heroTemplateID = HERO_LION_ID;
 
             Vector3Int randCellPos = new Vector3Int(0 + Random.Range(-3, 3), 0 + Random.Range(-3, 3), 0);
-            if (Managers.Map.CanGo(randCellPos) == false)
+            if (Managers.Map.CanGo(null, randCellPos) == false)
                 continue;
 
             Hero hero = Managers.Object.Spawn<Hero>(new Vector3Int(1, 0, 0), heroTemplateID);
+            //hero.ExtraCells = 1;
             //hero.SetCellPos(randCellPos, true);
             Managers.Map.MoveTo(hero, randCellPos, true);
         }
@@ -42,7 +44,8 @@ public class GameScene : BaseScene
             //Monster monster = Managers.Object.Spawn<Monster>(new Vector3Int(0, 1, 0), MONSTER_BEAR_ID);
             //Managers.Object.Spawn<Monster>(new Vector3(1, 1, 0), MONSTER_SLIME_ID);
             //Managers.Object.Spawn<Monster>(new Vector3(2, 1, 0), MONSTER_GOBLIN_ARCHER_ID);
-            Monster monster = Managers.Object.Spawn<Monster>(new Vector3(1, 1, 0), MONSTER_SLIME_ID);
+            Monster monster = Managers.Object.Spawn<Monster>(new Vector3(1, 1, 0), MONSTER_BEAR_ID);
+            monster.ExtraCells = 1;
             Managers.Map.MoveTo(monster, new Vector3Int(0, 4, 0), true);
 
         }
