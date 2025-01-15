@@ -38,7 +38,7 @@ public class Monster : Creature
         if (base.Init() == false)
             return false;
 
-        CreatureType = ECreatureType.Monster;
+        ObjectType = EObjectType.Monster;
 
         StartCoroutine(CoUpdateAI());
 

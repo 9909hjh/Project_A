@@ -63,24 +63,19 @@ public class ObjectManager
         
         BaseObject obj = go.GetComponent<BaseObject>();
 
-        if (obj.ObjectType == EObjectType.Creature)
+        if (obj.ObjectType == EObjectType.Hero)
         {
-            Creature creature = go.GetComponent<Creature>();
-            switch (creature.CreatureType)
-            {
-                case ECreatureType.Hero:
-                    obj.transform.parent = HeroRoot;
-                    Hero hero = creature as Hero;
-                    Heroes.Add(hero);
-                    break;
-                case ECreatureType.Monster:
-                    obj.transform.parent = MonsterRoot;
-                    Monster monster = creature as Monster;
-                    Monsters.Add(monster);
-                    break;
-            }
-
-            creature.SetInfo(templateID);
+            obj.transform.parent = HeroRoot;
+            Hero hero = go.GetComponent<Hero>();
+            Heroes.Add(hero);
+            hero.SetInfo(templateID);
+        }
+        else if (obj.ObjectType == EObjectType.Monster)
+        {
+            obj.transform.parent = HeroRoot;
+            Monster monster = go.GetComponent<Monster>();
+            Monsters.Add(monster);
+            monster.SetInfo(templateID);
         }
         else if (obj.ObjectType == EObjectType.Projectile)
         {
@@ -112,20 +107,15 @@ public class ObjectManager
     {
         EObjectType objectType = obj.ObjectType;
 
-        if (obj.ObjectType == EObjectType.Creature)
+        if (obj.ObjectType == EObjectType.Hero)
         {
-            Creature creature = obj.GetComponent<Creature>();
-            switch (creature.CreatureType)
-            {
-                case ECreatureType.Hero:
-                    Hero hero = creature as Hero;
-                    Heroes.Remove(hero);
-                    break;
-                case ECreatureType.Monster:
-                    Monster monster = creature as Monster;
-                    Monsters.Remove(monster);
-                    break;
-            }
+            Hero hero = obj.GetComponent<Hero>();
+            Heroes.Remove(hero);
+        }
+        else if (obj.ObjectType == EObjectType.Monster)
+        {
+            Monster monster = obj.GetComponent<Monster>();
+            Monsters.Remove(monster);
         }
         else if (obj.ObjectType == EObjectType.Projectile)
         {
@@ -157,14 +147,14 @@ public class ObjectManager
         HashSet<Creature> targets = new HashSet<Creature>();
         HashSet<Creature> ret = new HashSet<Creature>();
 
-        ECreatureType targetType = Util.DetermineTargetType(owner.CreatureType, isAllies);
+        EObjectType targetType = Util.DetermineTargetType(owner.ObjectType, isAllies);
 
-        if (targetType == ECreatureType.Monster)
+        if (targetType == EObjectType.Monster)
         {
             var objs = Managers.Map.GatherObjects<Monster>(owner.transform.position, range, range);
             targets.AddRange(objs);
         }
-        else if (targetType == ECreatureType.Hero)
+        else if (targetType == EObjectType.Hero)
         {
             var objs = Managers.Map.GatherObjects<Hero>(owner.transform.position, range, range);
             targets.AddRange(objs);
@@ -203,14 +193,14 @@ public class ObjectManager
         HashSet<Creature> targets = new HashSet<Creature>();
         HashSet<Creature> ret = new HashSet<Creature>();
 
-        ECreatureType targetType = Util.DetermineTargetType(owner.CreatureType, isAllies);
+        EObjectType targetType = Util.DetermineTargetType(owner.ObjectType, isAllies);
 
-        if (targetType == ECreatureType.Monster)
+        if (targetType == EObjectType.Monster)
         {
             var objs = Managers.Map.GatherObjects<Monster>(owner.transform.position, range, range);
             targets.AddRange(objs);
         }
-        else if (targetType == ECreatureType.Hero)
+        else if (targetType == EObjectType.Hero)
         {
             var objs = Managers.Map.GatherObjects<Hero>(owner.transform.position, range, range);
             targets.AddRange(objs);
