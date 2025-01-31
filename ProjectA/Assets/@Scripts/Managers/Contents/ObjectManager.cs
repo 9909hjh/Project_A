@@ -72,7 +72,7 @@ public class ObjectManager
         }
         else if (obj.ObjectType == EObjectType.Monster)
         {
-            obj.transform.parent = HeroRoot;
+            obj.transform.parent = MonsterRoot;
             Monster monster = go.GetComponent<Monster>();
             Monsters.Add(monster);
             monster.SetInfo(templateID);
