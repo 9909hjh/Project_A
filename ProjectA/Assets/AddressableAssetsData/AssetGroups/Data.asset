@@ -65,6 +65,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75f4c176c7144a84daa8a20dada774a3
+    m_Address: NpcData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b488be16f8abec74aa044d7ca36c96e7, type: 2}
   m_SchemaSet:
