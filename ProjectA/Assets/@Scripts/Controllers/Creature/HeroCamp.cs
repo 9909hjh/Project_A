@@ -30,6 +30,11 @@ public class HeroCamp : BaseObject
         return true;
     }
 
+    public void ForceMove(Vector3 position) // 강제로 이동하는 코드.
+    {
+        transform.position = position;
+    }
+
     private void Update()
     {
         Vector3 dir = _moveDir * Time.deltaTime * Speed;

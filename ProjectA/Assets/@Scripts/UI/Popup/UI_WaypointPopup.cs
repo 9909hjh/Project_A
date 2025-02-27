@@ -48,15 +48,15 @@ public class UI_WaypointPopup : UI_Popup
 
         foreach (var stage in Managers.Map.StageTransition.Stages)
         {
-            //UI_StageItem item = Managers.UI.MakeSubItem<UI_StageItem>(parent.transform);
+            UI_StageItem item = Managers.UI.MakeSubItem<UI_StageItem>(parent.transform);
 
-            //item.SetInfo(stage, () =>
-            //{
-            //    Managers.UI.ClosePopupUI(this);
-            //});
+            item.SetInfo(stage, () =>
+            {
+                Managers.UI.ClosePopupUI(this);
+            });
 
             //_items.Add(item);
-		}
+        }
     }
 
     void OnClickCloseButton(PointerEventData evt)
