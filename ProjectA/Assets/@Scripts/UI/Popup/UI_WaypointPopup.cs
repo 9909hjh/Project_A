@@ -16,7 +16,7 @@ public class UI_WaypointPopup : UI_Popup
         CloseButton,
     }
 
-    //List<UI_StageItem> _items = new List<UI_StageItem>();
+    List<UI_StageItem> _items = new List<UI_StageItem>();
 
     public override bool Init()
     {
@@ -42,7 +42,7 @@ public class UI_WaypointPopup : UI_Popup
         if (_init == false)
             return;
 
-        //_items.Clear();
+        _items.Clear();
 
 		GameObject parent = GetObject((int)GameObjects.WaypointList);
 
@@ -55,7 +55,7 @@ public class UI_WaypointPopup : UI_Popup
                 Managers.UI.ClosePopupUI(this);
             });
 
-            //_items.Add(item);
+            _items.Add(item);
         }
     }
 
