@@ -17,6 +17,21 @@ using System.Xml.Linq;
 public class DataTransformer : EditorWindow
 {
 #if UNITY_EDITOR
+    [MenuItem("Tools/RemoveSaveData")]
+    public static void RemoveSaveData() // 저장된 데이터를 삭제 후 다시 시작할 때를 대비한 툴.
+    {
+        string path = Application.persistentDataPath + "/SaveData.json";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("SaveFile Deleted");
+        }
+        else
+        {
+            Debug.Log("No SaveFile Detected");
+        }
+    }
+
     [MenuItem("Tools/ParseExcel %#K")]
     public static void ParseExcelDataToJson()
     {
