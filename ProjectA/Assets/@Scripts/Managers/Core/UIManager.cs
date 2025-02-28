@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,22 @@ public class UIManager
             return root;
         }
     }
+
+    public void CacheAllPopups()
+	{
+		var list = AppDomain.CurrentDomain.GetAssemblies()
+			.SelectMany(assembly => assembly.GetTypes())
+			.Where(type => type.IsSubclassOf(typeof(UI_Popup)));
+
+		foreach (Type type in list)
+		{
+			CachePopupUI(type);
+		}
+
+		// ShowPopupUI<UI_WaypointPopup>();
+		
+		CloseAllPopupUI();
+	}
 
 
     public void SetCanvas(GameObject go, bool sort = true, int sortOrder = 0)
