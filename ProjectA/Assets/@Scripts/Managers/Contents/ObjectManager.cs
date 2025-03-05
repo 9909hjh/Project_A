@@ -12,6 +12,7 @@ public class ObjectManager
     public HashSet<Projectile> Projectiles { get; } = new HashSet<Projectile>();
     public HashSet<Env> Envs { get; } = new HashSet<Env>();
     public HashSet<EffectBase> Effects { get; } = new HashSet<EffectBase>();
+    public HashSet<ItemHolder> ItemHolders { get; } = new HashSet<ItemHolder>();
     public HeroCamp Camp { get; private set; }
     public HashSet<Npc> Npcs { get; } = new HashSet<Npc>();
 
@@ -31,6 +32,7 @@ public class ObjectManager
     public Transform EnvRoot { get { return GetRootTransform("@Envs"); } }
     public Transform EffectRoot { get { return GetRootTransform("@Effects"); } }
     public Transform NpcRoot { get { return GetRootTransform("@Npc"); } }
+    public Transform ItemHolderRoot { get { return GetRootTransform("@ItemHolders"); } }
     #endregion
 
     // 데미지 폰트
@@ -110,6 +112,13 @@ public class ObjectManager
 
             npc.SetInfo(templateID);
         }
+        else if (obj.ObjectType == EObjectType.ItemHolder)
+        {
+            obj.transform.parent = ItemHolderRoot;
+
+            ItemHolder itemHolder = go.GetOrAddComponent<ItemHolder>();
+            ItemHolders.Add(itemHolder);
+        }
 
         return obj as T;
     }
@@ -151,6 +160,11 @@ public class ObjectManager
         {
             Npc npc = obj as Npc;
             Npcs.Remove(npc);
+        }
+        else if (obj.ObjectType == EObjectType.ItemHolder)
+        {
+            ItemHolder itemHolder = obj as ItemHolder;
+            ItemHolders.Remove(itemHolder);
         }
 
         Managers.Resource.Destroy(obj.gameObject);

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ParabolaMotion : ProjectileMotionBase
-{    public float HeightArc { get; protected set; } = 2;
+{    
+    public float HeightArc { get; protected set; } = 2;
 
     public new void SetInfo(int dataTemplateID, Vector3 startPosition, Vector3 targetPosition, Action endCallback)
     {
@@ -14,7 +15,7 @@ public class ParabolaMotion : ProjectileMotionBase
     protected override IEnumerator CoLaunchProjectile()
     {
         float journeyLength = Vector2.Distance(StartPosition, TargetPosition);
-        float totalTime = journeyLength / ProjectileData.ProjSpeed;
+        float totalTime = journeyLength / _speed;
         float elapsedTime = 0;
 
         while (elapsedTime < totalTime)

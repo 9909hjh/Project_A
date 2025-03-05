@@ -36,6 +36,7 @@ public static class Define
         Projectile,
         Env,
         Effect,
+        ItemHolder,
     }
 
     public enum ENpcType

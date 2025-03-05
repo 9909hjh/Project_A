@@ -114,13 +114,13 @@ MonoBehaviour:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9e9a97fa10743de468e835b553974a09
-    m_Address: Object_Firewood
+    m_Address: Object_Firewood.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9456dad1f5957414ab37f3ac1e8f980e
-    m_Address: Object_Meat
+    m_Address: Object_Meat.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
