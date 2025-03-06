@@ -5,9 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
+public interface INpcInteraction
+{
+    public void SetInfo(Npc owner);
+    public void HandleOnClickEvent();
+    public bool CanInteract();
+}
+
 public class Npc : BaseObject
 {
     public NpcData Data { get; set; }
+
+    public ENpcType NpcType { get { return Data.NpcType; } }
+
+    public INpcInteraction Interaction { get; private set; }
 
     private SkeletonAnimation _skeletonAnim;
     private UI_NpcInteraction _ui;
@@ -19,6 +30,18 @@ public class Npc : BaseObject
 
         ObjectType = EObjectType.Npc;
         return true;
+    }
+
+    private void Update()
+    {
+        if (Interaction != null && Interaction.CanInteract())
+        {
+            _ui.gameObject.SetActive(true);
+        }
+        else
+        {
+            _ui.gameObject.SetActive(false);
+        }
     }
 
     public void SetInfo(int dataId)
@@ -37,5 +60,19 @@ public class Npc : BaseObject
 
         _ui = button.GetComponent<UI_NpcInteraction>();
         _ui.SetInfo(DataTemplateID, this);
+
+        switch (Data.NpcType)
+        {
+            case ENpcType.Quest:
+                Interaction = new QuestInteraction();
+                break;
+        }
+
+        Interaction?.SetInfo(this);
+    }
+
+    public virtual void OnClickEvent()
+    {
+        Interaction?.HandleOnClickEvent();
     }
 }

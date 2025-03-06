@@ -5,28 +5,28 @@ using static Define;
 
 public struct ObjectSpawnInfo
 {
-	public ObjectSpawnInfo(string name, int dataId, int x, int y, Vector3 worldPos, EObjectType type)
-	{
-		Name = name;
-		DataId = dataId;
-		Vector3Int pos = new Vector3Int(x, y, 0);
-		CellPos = pos;
-		WorldPos = worldPos;
-		ObjectType = type;
-	}
+    public ObjectSpawnInfo(string name, int dataId, int x, int y, Vector3 worldPos, EObjectType type)
+    {
+        Name = name;
+        DataId = dataId;
+        Vector3Int pos = new Vector3Int(x, y, 0);
+        CellPos = pos;
+        WorldPos = worldPos;
+        ObjectType = type;
+    }
 
-	public string Name;
-	public int DataId;
-	public Vector3Int CellPos;
-	public Vector3 WorldPos;
-	public EObjectType ObjectType;
+    public string Name;
+    public int DataId;
+    public Vector3Int CellPos;
+    public Vector3 WorldPos;
+    public EObjectType ObjectType;
 }
 
 public class Stage : MonoBehaviour
 {
     [SerializeField]
     private List<BaseObject> _spawnObjects = new List<BaseObject>();
-    private List<ObjectSpawnInfo> _spawnInfos = new List<ObjectSpawnInfo>();
+    public List<ObjectSpawnInfo> SpawnInfos = new List<ObjectSpawnInfo>();
 
     private ObjectSpawnInfo _startSpawnInfo;
     public ObjectSpawnInfo StartSpawnInfo
@@ -40,7 +40,7 @@ public class Stage : MonoBehaviour
     public Tilemap TilemapObject; // 하이어라키에서 추가
     public Tilemap TilemapTerrain;
     public bool IsActive = false;
-    
+
     private Grid _grid;
 
     public void SetInfo(int stageIdx)
@@ -48,7 +48,7 @@ public class Stage : MonoBehaviour
         StageIndex = stageIdx;
         if (TilemapObject == null)
             Debug.LogError("TilemapObject must be assigned in the inspector.", this);
-        
+
         TilemapTerrain = Util.FindChild<Tilemap>(gameObject, "Terrain_01", true);
         SaveSpawnInfos();
 
@@ -87,17 +87,14 @@ public class Stage : MonoBehaviour
         gameObject.SetActive(false);
         DespawnObjects();
     }
-    
+
     private void SpawnObjects()
     {
-        foreach (ObjectSpawnInfo info in _spawnInfos)
+        foreach (ObjectSpawnInfo info in SpawnInfos)
         {
             Vector3 worldPos = info.WorldPos;
             Vector3Int cellPos = info.CellPos;
-            
-            if (Managers.Map.CanGo(null, cellPos) == false)
-                return;
-            
+
             switch (info.ObjectType)
             {
                 case EObjectType.Monster:
@@ -139,7 +136,7 @@ public class Stage : MonoBehaviour
 
         _spawnObjects.Clear();
     }
-    
+
     private void SaveSpawnInfos()
     {
         if (TilemapObject != null)
@@ -157,20 +154,20 @@ public class Stage : MonoBehaviour
 
                 Vector3 worldPos = Managers.Map.Cell2World(cellPos);
                 ObjectSpawnInfo info = new ObjectSpawnInfo(tile.Name, tile.DataId, x, y, worldPos, tile.ObjectType);
-                
+
                 if (tile.isStartPos)
                 {
                     StartSpawnInfo = info;
                     continue;
                 }
-                
+
                 Debug.Log($"{tile.name} , {tile.isWayPoint}, {tile.ObjectType}");
                 if (tile.isWayPoint)
                 {
                     WaypointSpawnInfo = info;
                 }
 
-                _spawnInfos.Add(info);
+                SpawnInfos.Add(info);
             }
         }
     }
