@@ -8,12 +8,14 @@ using static Define;
 
 public class QuestManager
 {
+    // 모든 퀘스트 동시 관리 버전
     public Dictionary<int, Quest> AllQuests = new Dictionary<int, Quest>();
 
-    public List<Quest> WaitingQuests { get; } = new List<Quest>();
-    public List<Quest> ProcessingQuests { get; } = new List<Quest>();
-    public List<Quest> CompletedQuests { get; } = new List<Quest>();
-    public List<Quest> RewardedQuests { get; } = new List<Quest>();
+    // 퀘스트 세부 관리 버전
+    //public List<Quest> WaitingQuests { get; } = new List<Quest>();
+    //public List<Quest> ProcessingQuests { get; } = new List<Quest>();
+    //public List<Quest> CompletedQuests { get; } = new List<Quest>();
+    //public List<Quest> RewardedQuests { get; } = new List<Quest>();
 
     public void Init()
     {
@@ -27,12 +29,12 @@ public class QuestManager
     {
         foreach (QuestData questData in Managers.Data.QuestDic.Values.ToList())
         {
-            if (AllQuests.ContainsKey(questData.TemplateId))
+            if (AllQuests.ContainsKey(questData.DataId))
                 continue;
 
             QuestSaveData questSaveData = new QuestSaveData()
             {
-                TemplateId = questData.TemplateId,
+                TemplateId = questData.DataId,
                 State = Define.EQuestState.None,
                 NextResetTime = DateTime.MaxValue,
             };
@@ -60,21 +62,21 @@ public class QuestManager
         if (quest == null)
             return null;
 
-        switch (quest.State)
-        {
-            case Define.EQuestState.None:
-                WaitingQuests.Add(quest);
-                break;
-            case Define.EQuestState.Processing:
-                ProcessingQuests.Add(quest);
-                break;
-            case Define.EQuestState.Completed:
-                CompletedQuests.Add(quest);
-                break;
-            case Define.EQuestState.Rewarded:
-                RewardedQuests.Add(quest);
-                break;
-        }
+        //switch (quest.State)
+        //{
+        //    case Define.EQuestState.None:
+        //        WaitingQuests.Add(quest);
+        //        break;
+        //    case Define.EQuestState.Processing:
+        //        ProcessingQuests.Add(quest);
+        //        break;
+        //    case Define.EQuestState.Completed:
+        //        CompletedQuests.Add(quest);
+        //        break;
+        //    case Define.EQuestState.Rewarded:
+        //        RewardedQuests.Add(quest);
+        //        break;
+        //}
 
         AllQuests.Add(quest.TemplateId, quest);
 
@@ -85,17 +87,25 @@ public class QuestManager
     {
         AllQuests.Clear();
 
-        WaitingQuests.Clear();
-        ProcessingQuests.Clear();
-        CompletedQuests.Clear();
-        RewardedQuests.Clear();
+        //WaitingQuests.Clear();
+        //ProcessingQuests.Clear();
+        //CompletedQuests.Clear();
+        //RewardedQuests.Clear();
     }
 
     void OnHandleBroadcastEvent(EBroadcastEventType eventType, int value)
     {
-        foreach (Quest quest in ProcessingQuests)
+        foreach (Quest quest in AllQuests.Values)
         {
-            quest.OnHandleBroadcastEvent(eventType, value);
+            if (quest.State == EQuestState.Processing)
+                quest.OnHandleBroadcastEvent(eventType, value);
         }
+
+        // 세부 관리 버전
+        //foreach (Quest quest in ProcessingQuests)
+        //{
+        //    quest.OnHandleBroadcastEvent(eventType, value);
+        //}
+
     }
 }

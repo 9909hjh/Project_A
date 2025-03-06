@@ -38,9 +38,6 @@ namespace Data
     public class MonsterData : CreatureData
     {
         public int DropItemId;
-
-        [NonSerialized]
-        public DropTableData DropTable; // 몬스터에 드랍테이블 밀 넣기
     }
 
     [Serializable]
@@ -476,7 +473,8 @@ namespace Data
     [Serializable]
     public class QuestData
     {
-        public int TemplateId;
+        public int DataId;
+        public string Name;
         public string DescriptionTextId;
         public EQuestPeriodType QuestPeriodType;
         //public EQuestCondition Condition;
@@ -488,7 +486,6 @@ namespace Data
     public class QuestTaskData
     {
         public EQuestObjectiveType ObjectiveType;
-        public string DescriptionTextId;
         public int ObjectiveDataId;
         public int ObjectiveCount;
     }
@@ -509,7 +506,7 @@ namespace Data
         {
             Dictionary<int, QuestData> dict = new Dictionary<int, QuestData>();
             foreach (QuestData quest in quests)
-                dict.Add(quest.TemplateId, quest);
+                dict.Add(quest.DataId, quest);
             return dict;
         }
     }

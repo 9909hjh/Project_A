@@ -237,14 +237,15 @@ public class GameManager
             SaveData.CompletedQuests.Clear();
             SaveData.RewardedQuests.Clear();
 
-            foreach (Quest item in Managers.Quest.ProcessingQuests)
-                SaveData.ProcessingQuests.Add(item.SaveData);
+            // 퀘스트 세부 관리 버전
+            //foreach (Quest item in Managers.Quest.ProcessingQuests)
+            //    SaveData.ProcessingQuests.Add(item.SaveData);
 
-            foreach (Quest item in Managers.Quest.CompletedQuests)
-                SaveData.CompletedQuests.Add(item.SaveData);
+            //foreach (Quest item in Managers.Quest.CompletedQuests)
+            //    SaveData.CompletedQuests.Add(item.SaveData);
 
-            foreach (Quest item in Managers.Quest.RewardedQuests)
-                SaveData.RewardedQuests.Add(item.SaveData);
+            //foreach (Quest item in Managers.Quest.RewardedQuests)
+            //    SaveData.RewardedQuests.Add(item.SaveData);
         }
 
 

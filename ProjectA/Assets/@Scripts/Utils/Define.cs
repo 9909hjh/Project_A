@@ -294,6 +294,7 @@ public static class Define
         SpendGold,
         UseItem,
         Survival,
+        ClearDungeon
     }
 
     public enum EQuestRewardType
@@ -321,8 +322,24 @@ public static class Define
         ChangeWood,
         ChangeMineral,
         ChangeGold,
+        ChangeDia,
+        ChangeMaterials,
         KillMonster,
         LevelUp,
+        DungeonClear,
+        ChangeInventory,
+        ChangeCrew,
+        QuestClear,
+    }
+
+    public enum EResourceType
+    {
+        Wood,
+        Mineral,
+        Meat,
+        Gold,
+        Materials,
+        Dia
     }
 
     // 임시 코드
