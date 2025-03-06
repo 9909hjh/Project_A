@@ -275,6 +275,7 @@ namespace Data
         public string PrefabLabel;
         public string SpriteName;
         public string SkeletonDataID;
+        public int QuestDataId;
     }
 
     [Serializable]

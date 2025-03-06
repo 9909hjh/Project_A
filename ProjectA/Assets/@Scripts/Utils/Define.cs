@@ -41,13 +41,21 @@ public static class Define
 
     public enum ENpcType
     {
-        Camp,
-        Portal,
-        Waypoint,
-        BlackSmith,
-        Guild,
-        TreasureBox,
-        Dungeon
+        None,
+		StartPosition,
+		Guild,
+		Portal,
+		Waypoint,
+		BlackSmith,
+		Training,
+		TreasureBox,
+		Dungeon,
+		Quest,
+		GoldStorage,
+		WoodStorage,
+		MineralStorage,
+		Exchange,
+		RuneStone,
     }
 
     public enum EEnvState
