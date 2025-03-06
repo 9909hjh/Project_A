@@ -17,6 +17,9 @@ public class GameSaveData
     public int Gold = 0;
 
     public List<HeroSaveData> Heroes = new List<HeroSaveData>();
+
+    public int ItemDbIdGenerator = 1;
+    public List<ItemSaveData> Items = new List<ItemSaveData>();
 }
 
 [Serializable]
@@ -33,6 +36,18 @@ public enum HeroOwningState
     Unowned,
     Owned,
     Picked,
+}
+
+[Serializable]
+public class ItemSaveData
+{
+    public int InstanceId;
+    public int DbId;
+    public int TemplateId;
+    public int Count;
+    public int EquipSlot; // 장착 + 인벤 + 창고
+    //public int OwnerId;
+    public int EnchantCount;
 }
 
 public class GameManager
@@ -86,6 +101,13 @@ public class GameManager
     public int UnownedHeroCount { get { return _saveData.Heroes.Where(h => h.OwningState == HeroOwningState.Unowned).Count(); } }
     public int OwnedHeroCount { get { return _saveData.Heroes.Where(h => h.OwningState == HeroOwningState.Owned).Count(); } }
     public int PickedHeroCount { get { return _saveData.Heroes.Where(h => h.OwningState == HeroOwningState.Picked).Count(); } }
+
+    public int GenerateItemDbId()
+    {
+        int itemDbId = _saveData.ItemDbIdGenerator;
+        _saveData.ItemDbIdGenerator++;
+        return itemDbId;
+    }
 
     #endregion
 
@@ -159,7 +181,7 @@ public class GameManager
     {
         if (File.Exists(Path))
             return;
-
+        // Hero
         var heroes = Managers.Data.HeroDic.Values.ToList();
         foreach (HeroData hero in heroes)
         {
@@ -178,6 +200,12 @@ public class GameManager
 
     public void SaveGame()
     {
+        //Hero
+
+        //Item
+
+        //Quest
+
         string jsonStr = JsonUtility.ToJson(Managers.Game.SaveData);
         File.WriteAllText(Path, jsonStr);
         Debug.Log($"Save Game Completed : {Path}");
@@ -193,6 +221,12 @@ public class GameManager
 
         if (data != null)
             Managers.Game.SaveData = data;
+
+        //Hero
+
+        //Item
+
+        //Quest
 
         Debug.Log($"Save Game Loaded : {Path}");
         return true;
