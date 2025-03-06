@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static Define;
 using Random = UnityEngine.Random;
 
 // 가변적 데이터를 위한 저장방식
@@ -20,6 +21,10 @@ public class GameSaveData
 
     public int ItemDbIdGenerator = 1;
     public List<ItemSaveData> Items = new List<ItemSaveData>();
+
+    public List<QuestSaveData> ProcessingQuests = new List<QuestSaveData>(); // 진행중
+    public List<QuestSaveData> CompletedQuests = new List<QuestSaveData>(); // 완료
+    public List<QuestSaveData> RewardedQuests = new List<QuestSaveData>(); // 보상 받음
 }
 
 [Serializable]
@@ -50,6 +55,15 @@ public class ItemSaveData
     public int EnchantCount;
 }
 
+[Serializable]
+public class QuestSaveData
+{
+    public int TemplateId;
+    public EQuestState State = EQuestState.None;
+    public List<int> ProgressCount = new List<int>();
+    public DateTime NextResetTime; // 이 방식은 클라이언트에서 받아오는거라 조작을 할 수 있는데 서버 연결을 하면 해결될거 같음.
+}
+
 public class GameManager
 {
     #region GameData
@@ -62,7 +76,7 @@ public class GameManager
         private set
         {
             _saveData.Wood = value;
-            //(Managers.UI.SceneUI as UI_GameScene)?.RefreshWoodText();
+            BroadcastEvent(EBroadcastEventType.ChangeWood, value);
         }
     }
 
@@ -72,7 +86,7 @@ public class GameManager
         private set
         {
             _saveData.Mineral = value;
-            //(Managers.UI.SceneUI as UI_GameScene)?.RefreshMineralText();
+            BroadcastEvent(EBroadcastEventType.ChangeMineral, value);
         }
     }
 
@@ -82,7 +96,7 @@ public class GameManager
         private set
         {
             _saveData.Meat = value;
-            //(Managers.UI.SceneUI as UI_GameScene)?.RefreshMeatText();
+            BroadcastEvent(EBroadcastEventType.ChangeMeat, value);
         }
     }
 
@@ -92,8 +106,13 @@ public class GameManager
         private set
         {
             _saveData.Gold = value;
-            //(Managers.UI.SceneUI as UI_GameScene)?.RefreshGoldText();
+            BroadcastEvent(EBroadcastEventType.ChangeGold, value);
         }
+    }
+
+    public void BroadcastEvent(EBroadcastEventType eventType, int value)
+    {
+        OnBroadcastEvent?.Invoke(eventType, value);
     }
 
     public List<HeroSaveData> AllHeroes { get { return _saveData.Heroes; } }
@@ -181,6 +200,7 @@ public class GameManager
     {
         if (File.Exists(Path))
             return;
+
         // Hero
         var heroes = Managers.Data.HeroDic.Values.ToList();
         foreach (HeroData hero in heroes)
@@ -213,7 +233,18 @@ public class GameManager
 
         //Quest
         {
-            
+            SaveData.ProcessingQuests.Clear();
+            SaveData.CompletedQuests.Clear();
+            SaveData.RewardedQuests.Clear();
+
+            foreach (Quest item in Managers.Quest.ProcessingQuests)
+                SaveData.ProcessingQuests.Add(item.SaveData);
+
+            foreach (Quest item in Managers.Quest.CompletedQuests)
+                SaveData.CompletedQuests.Add(item.SaveData);
+
+            foreach (Quest item in Managers.Quest.RewardedQuests)
+                SaveData.RewardedQuests.Add(item.SaveData);
         }
 
 
@@ -245,7 +276,28 @@ public class GameManager
             }
         }
 
-        //Quest
+        //Quest : 꺼내오기
+        {
+            Managers.Quest.Clear();
+
+            foreach (QuestSaveData questSaveData in data.ProcessingQuests)
+            {
+                Managers.Quest.AddQuest(questSaveData);
+            }
+
+            foreach (QuestSaveData questSaveData in data.CompletedQuests)
+            {
+                Managers.Quest.AddQuest(questSaveData);
+            }
+
+            foreach (QuestSaveData questSaveData in data.RewardedQuests)
+            {
+                Managers.Quest.AddQuest(questSaveData);
+            }
+
+            Managers.Quest.AddUnknownQuests();
+        }
+
 
         Debug.Log($"Save Game Loaded : {Path}");
         return true;
@@ -255,6 +307,8 @@ public class GameManager
     #region Action
     public event Action<Vector2> OnMoveDirChanged;
     public event Action<Define.EJoystickState> OnJoystickStateChanged;
+
+    public event Action<EBroadcastEventType, int> OnBroadcastEvent;
     #endregion
 
 
