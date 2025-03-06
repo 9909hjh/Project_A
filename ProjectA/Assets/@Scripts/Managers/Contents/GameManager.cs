@@ -193,6 +193,8 @@ public class GameManager
             SaveData.Heroes.Add(saveData);
         }
 
+        // Todo : item
+
         // TEMP
         SaveData.Heroes[0].OwningState = HeroOwningState.Picked;
         SaveData.Heroes[1].OwningState = HeroOwningState.Owned;
@@ -203,8 +205,17 @@ public class GameManager
         //Hero
 
         //Item
+        {
+            SaveData.Items.Clear(); // 저장하는 순간 저장했던 데이터를 지우고
+            foreach (var item in Managers.Inventory.AllItems) // 현재의 데이터를 저장하기
+                SaveData.Items.Add(item.SaveData);
+        }
 
         //Quest
+        {
+            
+        }
+
 
         string jsonStr = JsonUtility.ToJson(Managers.Game.SaveData);
         File.WriteAllText(Path, jsonStr);
@@ -225,6 +236,14 @@ public class GameManager
         //Hero
 
         //Item
+        {
+            Managers.Inventory.Clear();
+
+            foreach (ItemSaveData itemSaveData in data.Items)
+            {
+                Managers.Inventory.AddItem(itemSaveData);
+            }
+        }
 
         //Quest
 
