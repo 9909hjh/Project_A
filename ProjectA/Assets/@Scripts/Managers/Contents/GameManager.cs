@@ -305,10 +305,9 @@ public class GameManager
             }
         }
 
-        // TEMP
+        // TEMP : 임시 자원
         SaveData.Heroes[0].OwningState = EHeroOwningState.Picked;
         SaveData.Heroes[1].OwningState = EHeroOwningState.Owned;
-
         Wood = 100;
         Gold = 100;
         Mineral = 100;
