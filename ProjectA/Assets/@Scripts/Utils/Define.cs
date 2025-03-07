@@ -85,6 +85,13 @@ public static class Define
         ForcePath
     }
 
+    public enum EHeroOwningState
+    {
+        Unowned,
+        Owned,
+        Picked,
+    }
+
     public enum EJoystickState
     {
         PointerDown,

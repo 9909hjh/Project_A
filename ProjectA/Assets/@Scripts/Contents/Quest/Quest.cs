@@ -85,9 +85,9 @@ public class Quest
                     Managers.Game.EarnResource(EResourceType.Gold, reward.RewardCount);
                     break;
                 case EQuestRewardType.Hero:
-                    //int heroId = reward.RewardDataId;
-                    //Managers.Hero.AcquireHeroCard(heroId, reward.RewardCount);
-                    //Managers.Hero.PickHero(heroId, Vector3Int.zero);
+                    int heroId = reward.RewardDataId;
+                    Managers.Hero.AcquireHeroCard(heroId, reward.RewardCount);
+                    Managers.Hero.PickHero(heroId, Vector3Int.zero);
                     break;
                 case EQuestRewardType.Meat:
                     Managers.Game.EarnResource(EResourceType.Meat, reward.RewardCount);
